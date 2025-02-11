@@ -4,7 +4,9 @@ from PyQt6.QtCore import Qt, QPointF
 from signon import Ui_Form  # 登录界面的 UI 类
 from sysmain import Ui_mainForm  # 主窗口的 UI 类
 from PyQt6 import QtCharts
-from PyQt6.QtMultimedia import QMediaDevices, QAudioInput, QAudioFormat, QAudioSource
+from PyQt6.QtMultimedia import QMediaDevices, QAudioInput, QAudioFormat, QAudioSource #实现音频读入功能所需的依赖
+from PyQt6.QtWidgets import QFileDialog  # 实现保存功能所需的依赖
+
 
 class QmyWidget(QWidget):
     def __init__(self, parent=None):
@@ -19,7 +21,7 @@ class QmyWidget(QWidget):
         password = self.ui.lineEdit_2.text()
 
         # 模拟登录验证
-        if username == "admin" and password == "123456":
+        if username == "admin" and password == "*****":
             self.close()  # 关闭登录窗口
             self.open_main_window()  # 打开主窗口
         else:
@@ -30,17 +32,19 @@ class QmyWidget(QWidget):
         self.main_window = QWidget()
         self.main_ui = Ui_mainForm()
         self.main_ui.setupUi(self.main_window)
+        self.main_window.setWindowTitle("脑电数据分析工具")
 
         self.main_ui.pushButton_start.clicked.connect(self.init_audio_visualization)
         self.main_ui.pushButton_clear.clicked.connect(self.clear_audio_visualization)
         self.main_ui.pushButton_stop.clicked.connect(self.stop_audio_visualization)
-        self.main_ui.pushButton_continue.clicked.connect(self.continue_audio_visualization)
+        self.main_ui.pushButton_save.clicked.connect(self.save_audio_visualization)
         self.main_window.show()
 
     def init_audio_visualization(self):
         # 创建音频图表
         self.chart_audio = QtCharts.QChart()
-        self.series_audio = QtCharts.QLineSeries()
+        # self.series_audio = QtCharts.QLineSeries()
+        self.series_audio = QtCharts.QSplineSeries()  # 使用样条曲线系列
         self.chart_audio.addSeries(self.series_audio)
         self.chart_audio.legend().hide()
         self.audio_axisX = QtCharts.QValueAxis()
@@ -77,6 +81,7 @@ class QmyWidget(QWidget):
         # 初始化暂停标志
         self.is_paused = False
 
+
     # 实现清空功能
     def clear_audio_visualization(self):
         self.chart_audio = QtCharts.QChart()
@@ -99,16 +104,33 @@ class QmyWidget(QWidget):
     def stop_audio_visualization(self):
         # 效果一 四个按钮
         # 切换暂停状态
-        self.is_paused = True
+        # self.is_paused = True
         # 效果二 三个按钮
-        # self.is_paused = not self.is_paused
-        # if self.is_paused:
-        #     self.main_ui.pushButton_stop.setText("继续")
-        # else:
-        #     self.main_ui.pushButton_stop.setText("暂停")
+        self.is_paused = not self.is_paused
+        if self.is_paused:
+            self.main_ui.pushButton_stop.setText("继续")
+        else:
+            self.main_ui.pushButton_stop.setText("暂停")
 
-    def continue_audio_visualization(self):
-        self.is_paused = False
+    # 在类QmyWidget中添加以下方法
+    def save_audio_visualization(self):
+        # 弹出文件保存对话框
+        file_path, _ = QFileDialog.getSaveFileName(
+            self.main_window,
+            "保存图表",
+            "",
+            "PNG图片 (*.png);;JPEG图片 (*.jpeg *.jpg)"
+        )
+
+        if file_path:
+            # 获取当前图表视图的截图
+            pixmap = self.main_ui.QChartView.grab()
+            # 保存图片到指定路径
+            success = pixmap.save(file_path)
+            if success:
+                QMessageBox.information(self.main_window, "保存成功", "图表已成功保存！")
+            else:
+                QMessageBox.warning(self.main_window, "保存失败", "无法保存文件，请检查路径和权限。")
 
     def do_IO_readyRead(self):
         if self.is_paused:  # 如果暂停标志为True，则不更新图表
