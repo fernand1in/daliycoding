@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Film Elite - 系列排行</title>
+	<meta name="description" content="Film Elite - 您的高端影视观看平台，提供最新、最热门的电影和剧集排行">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<style>
+		/* 全局样式 */
+		:root {
+			--primary-color: #1a2a3a;
+			--secondary-color: #2c3e50;
+			--accent-color: #e67e22;
+			--text-color: #f5f5f5;
+			--dark-text: #34495e;
+			--light-bg: #f8f9fa;
+			--card-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+			--transition: all 0.3s ease;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Raleway', sans-serif;
+			background-color: var(--primary-color);
+			color: var(--text-color);
+			line-height: 1.6;
+		}
+
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 20px;
+		}
+
+		/* 按钮样式 */
+		.btn {
+			display: inline-block;
+			padding: 12px 24px;
+			background-color: var(--accent-color);
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			transition: var(--transition);
+			text-decoration: none;
+		}
+
+		.btn:hover {
+			background-color: #d35400;
+			transform: translateY(-2px);
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		}
+
+		.btn-outline {
+			background-color: transparent;
+			border: 2px solid var(--accent-color);
+			color: var(--accent-color);
+		}
+
+		.btn-outline:hover {
+			background-color: var(--accent-color);
+			color: white;
+		}
+
+		/* 导航栏样式 */
+		.navbar {
+			background-color: rgba(26, 42, 58, 0.95);
+			padding: 15px 0;
+			position: sticky;
+			top: 0;
+			z-index: 1000;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		}
+
+		.navbar-container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.logo {
+			font-family: 'Montserrat', sans-serif;
+			font-weight: 700;
+			font-size: 24px;
+			color: var(--text-color);
+			text-decoration: none;
+		}
+
+		.logo span {
+			color: var(--accent-color);
+		}
+
+		.nav-links {
+			display: flex;
+			list-style: none;
+		}
+
+		.nav-links li {
+			margin-left: 30px;
+		}
+
+		.nav-links a {
+			color: var(--text-color);
+			text-decoration: none;
+			font-weight: 500;
+			transition: var(--transition);
+			position: relative;
+		}
+
+		.nav-links a:after {
+			content: '';
+			position: absolute;
+			width: 0;
+			height: 2px;
+			bottom: -5px;
+			left: 0;
+			background-color: var(--accent-color);
+			transition: var(--transition);
+		}
+
+		.nav-links a:hover:after {
+			width: 100%;
+		}
+
+		.nav-dropdown {
+			position: relative;
+		}
+
+		.dropdown-content {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			background-color: var(--secondary-color);
+			min-width: 200px;
+			box-shadow: var(--card-shadow);
+			border-radius: 4px;
+			padding: 10px 0;
+			opacity: 0;
+			visibility: hidden;
+			transform: translateY(10px);
+			transition: var(--transition);
+			z-index: 1;
+		}
+
+		.nav-dropdown:hover .dropdown-content {
+			opacity: 1;
+			visibility: visible;
+			transform: translateY(0);
+		}
+
+		.dropdown-content a {
+			display: block;
+			padding: 8px 15px;
+			color: var(--text-color);
+			text-decoration: none;
+			transition: var(--transition);
+		}
+
+		.dropdown-content a:hover {
+			background-color: rgba(230, 126, 34, 0.1);
+		}
+
+		.mobile-menu-btn {
+			display: none;
+			background: none;
+			border: none;
+			color: var(--text-color);
+			font-size: 24px;
+			cursor: pointer;
+		}
+
+		/* 搜索框样式 */
+		.search-container {
+			position: relative;
+			margin-left: 30px;
+		}
+
+		.search-input {
+			padding: 8px 15px;
+			padding-right: 40px;
+			border: none;
+			border-radius: 4px;
+			background-color: rgba(255, 255, 255, 0.1);
+			color: var(--text-color);
+			width: 200px;
+			transition: var(--transition);
+		}
+
+		.search-input:focus {
+			outline: none;
+			background-color: rgba(255, 255, 255, 0.2);
+			width: 250px;
+		}
+
+		.search-btn {
+			position: absolute;
+			right: 10px;
+			top: 50%;
+			transform: translateY(-50%);
+			background: none;
+			border: none;
+			color: var(--text-color);
+			cursor: pointer;
+		}
+
+		/* 主横幅区域 */
+		.hero {
+			height: 600px;
+			background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/banner-bg.jpg');
+			background-size: cover;
+			background-position: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			padding: 0 20px;
+		}
+
+		.hero-content {
+			max-width: 800px;
+		}
+
+		.hero h1 {
+			font-size: 48px;
+			font-weight: 700;
+			margin-bottom: 20px;
+			letter-spacing: 2px;
+		}
+
+		.hero p {
+			font-size: 18px;
+			margin-bottom: 30px;
+			color: #e0e0e0;
+		}
+
+		/* 特色区域 */
+		.features {
+			padding: 80px 0;
+			background-color: var(--secondary-color);
+		}
+
+		.section-title {
+			text-align: center;
+			margin-bottom: 50px;
+		}
+
+		.section-title h2 {
+			font-size: 36px;
+			font-weight: 700;
+			position: relative;
+			display: inline-block;
+			padding-bottom: 15px;
+		}
+
+		.section-title h2:after {
+			content: '';
+			position: absolute;
+			width: 60px;
+			height: 3px;
+			background-color: var(--accent-color);
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		.features-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 30px;
+		}
+
+		.feature-card {
+			background-color: var(--primary-color);
+			border-radius: 8px;
+			padding: 30px;
+			text-align: center;
+			transition: var(--transition);
+			box-shadow: var(--card-shadow);
+		}
+
+		.feature-card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+		}
+
+		.feature-icon {
+			font-size: 40px;
+			color: var(--accent-color);
+			margin-bottom: 20px;
+		}
+
+		.feature-card h3 {
+			font-size: 22px;
+			margin-bottom: 15px;
+		}
+
+		/* 电影展示区域 */
+		.movies-section {
+			padding: 80px 0;
+			background-color: var(--primary-color);
+		}
+
+		.movies-tabs {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 40px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.tab-btn {
+			padding: 10px 20px;
+			background: none;
+			border: none;
+			color: var(--text-color);
+			font-size: 16px;
+			cursor: pointer;
+			position: relative;
+			transition: var(--transition);
+		}
+
+		.tab-btn:after {
+			content: '';
+			position: absolute;
+			width: 0;
+			height: 3px;
+			background-color: var(--accent-color);
+			bottom: -1px;
+			left: 0;
+			transition: var(--transition);
+		}
+
+		.tab-btn:hover, .tab-btn.active {
+			color: var(--accent-color);
+		}
+
+		.tab-btn:hover:after, .tab-btn.active:after {
+			width: 100%;
+		}
+
+		.movie-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+			gap: 30px;
+		}
+
+		.movie-card {
+			background-color: var(--secondary-color);
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: var(--card-shadow);
+			transition: var(--transition);
+		}
+
+		.movie-card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+		}
+
+		.movie-img-container {
+			position: relative;
+			height: 300px;
+			overflow: hidden;
+		}
+
+		.movie-img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: var(--transition);
+		}
+
+		.movie-card:hover .movie-img {
+			transform: scale(1.1);
+		}
+
+		.play-btn {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%) scale(0);
+			width: 60px;
+			height: 60px;
+			background-color: rgba(230, 126, 34, 0.8);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-size: 20px;
+			cursor: pointer;
+			transition: var(--transition);
+		}
+
+		.movie-card:hover .play-btn {
+			transform: translate(-50%, -50%) scale(1);
+		}
+
+		.movie-info {
+			padding: 20px;
+		}
+
+		.movie-title {
+			font-size: 18px;
+			font-weight: 600;
+			margin-bottom: 10px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.movie-meta {
+			display: flex;
+			justify-content: space-between;
+			color: #bdc3c7;
+			font-size: 14px;
+			margin-bottom: 10px;
+		}
+
+		.movie-rating {
+			color: #f1c40f;
+		}
+
+		.movie-category {
+			display: inline-block;
+			padding: 3px 10px;
+			background-color: rgba(230, 126, 34, 0.2);
+			color: var(--accent-color);
+			border-radius: 20px;
+			font-size: 12px;
+			margin-top: 10px;
+		}
+
+		.vip-badge {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			background-color: var(--accent-color);
+			color: white;
+			padding: 5px 10px;
+			border-radius: 3px;
+			font-size: 12px;
+			font-weight: 600;
+		}
+
+		/* 分页导航 */
+		.pagination {
+			display: flex;
+			justify-content: center;
+			margin-top: 50px;
+		}
+
+		.page-item {
+			margin: 0 5px;
+		}
+
+		.page-link {
+			display: block;
+			width: 40px;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			background-color: var(--secondary-color);
+			color: var(--text-color);
+			text-decoration: none;
+			transition: var(--transition);
+		}
+
+		.page-link:hover, .page-item.active .page-link {
+			background-color: var(--accent-color);
+			color: white;
+		}
+
+		/* 页脚样式 */
+		.footer {
+			background-color: var(--secondary-color);
+			padding: 60px 0 20px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.footer-content {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 30px;
+			margin-bottom: 40px;
+		}
+
+		.footer-about {
+			margin-bottom: 20px;
+		}
+
+		.footer-logo {
+			font-family: 'Montserrat', sans-serif;
+			font-size: 24px;
+			font-weight: 700;
+			color: var(--text-color);
+			margin-bottom: 15px;
+			display: block;
+		}
+
+		.footer-about p {
+			margin-bottom: 20px;
+			color: #bdc3c7;
+		}
+
+		.social-links {
+			display: flex;
+		}
+
+		.social-links a {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 36px;
+			height: 36px;
+			background-color: rgba(255, 255, 255, 0.1);
+			border-radius: 50%;
+			margin-right: 10px;
+			color: var(--text-color);
+			transition: var(--transition);
+		}
+
+		.social-links a:hover {
+			background-color: var(--accent-color);
+			color: white;
+		}
+
+		.footer-title {
+			font-size: 18px;
+			font-weight: 600;
+			margin-bottom: 20px;
+			position: relative;
+			padding-bottom: 10px;
+		}
+
+		.footer-title:after {
+			content: '';
+			position: absolute;
+			width: 40px;
+			height: 2px;
+			background-color: var(--accent-color);
+			bottom: 0;
+			left: 0;
+		}
+
+		.footer-links {
+			list-style: none;
+		}
+
+		.footer-links li {
+			margin-bottom: 10px;
+		}
+
+		.footer-links a {
+			color: #bdc3c7;
+			text-decoration: none;
+			transition: var(--transition);
+		}
+
+		.footer-links a:hover {
+			color: var(--accent-color);
+			padding-left: 5px;
+		}
+
+		.footer-contact p {
+			display: flex;
+			align-items: flex-start;
+			margin-bottom: 15px;
+			color: #bdc3c7;
+		}
+
+		.footer-contact i {
+			margin-right: 10px;
+			color: var(--accent-color);
+		}
+
+		.footer-bottom {
+			text-align: center;
+			padding-top: 20px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+			color: #bdc3c7;
+			font-size: 14px;
+		}
+
+		/* 登录模态框 */
+		.modal-dialog {
+			max-width: 400px;
+		}
+
+		.modal-content {
+			border-radius: 8px;
+			overflow: hidden;
+			border: none;
+		}
+
+		.modal-header {
+			background-color: var(--secondary-color);
+			padding: 15px 20px;
+			border-bottom: none;
+		}
+
+		.modal-title {
+			font-weight: 600;
+			color: var(--text-color);
+		}
+
+		.modal-body {
+			padding: 20px;
+		}
+
+		.form-control {
+			height: 45px;
+			border-radius: 4px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			background-color: rgba(255, 255, 255, 0.05);
+			color: var(--text-color);
+			padding: 0 15px;
+			margin-bottom: 20px;
+		}
+
+		.form-control:focus {
+			outline: none;
+			border-color: var(--accent-color);
+			box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
+		}
+
+		.checkbox-container {
+			display: flex;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+		.checkbox-container input {
+			margin-right: 10px;
+		}
+
+		.checkbox-container label {
+			color: #bdc3c7;
+		}
+
+		.form-footer {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.forgot-password {
+			color: var(--accent-color);
+			text-decoration: none;
+		}
+
+		.forgot-password:hover {
+			text-decoration: underline;
+		}
+
+		/* 响应式设计 */
+		@media (max-width: 992px) {
+			.hero h1 {
+				font-size: 40px;
+			}
+
+			.section-title h2 {
+				font-size: 32px;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.nav-links, .search-container {
+				display: none;
+			}
+
+			.mobile-menu-btn {
+				display: block;
+			}
+
+			.mobile-menu-active .nav-links {
+				display: flex;
+				flex-direction: column;
+				position: absolute;
+				top: 70px;
+				left: 0;
+				right: 0;
+				background-color: var(--secondary-color);
+				padding: 20px;
+				box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+			}
+
+			.mobile-menu-active .nav-links li {
+				margin: 10px 0;
+			}
+
+			.hero {
+				height: 500px;
+			}
+
+			.hero h1 {
+				font-size: 36px;
+			}
+
+			.movie-grid {
+				grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+			}
+		}
+
+		@media (max-width: 576px) {
+			.hero {
+				height: 400px;
+			}
+
+			.hero h1 {
+				font-size: 28px;
+			}
+
+			.section-title h2 {
+				font-size: 28px;
+			}
+
+			.movie-grid {
+				grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+			}
+
+			.movie-img-container {
+				height: 200px;
+			}
+		}
+
+		/* 主横幅轮播 */
+		.hero-slider-container {
+			position: relative;
+			height: 600px;
+			overflow: hidden;
+			margin-bottom: 60px;
+		}
+
+		.hero-slider {
+			height: 100%;
+		}
+
+		.hero-slide {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			opacity: 0;
+			transition: opacity 0.8s ease;
+		}
+
+		.hero-slide.active {
+			opacity: 1;
+			z-index: 1;
+		}
+
+		.hero-content {
+			max-width: 800px;
+			padding: 0 20px;
+			text-align: center;
+			z-index: 2;
+			color: white;
+		}
+
+		.hero-content h1 {
+			font-size: 48px;
+			font-weight: 700;
+			margin-bottom: 20px;
+		}
+
+		.hero-content p {
+			font-size: 18px;
+			margin-bottom: 30px;
+		}
+
+		.slider-controls {
+			position: absolute;
+			bottom: 30px;
+			left: 0;
+			right: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 10;
+		}
+
+		.slider-dots {
+			display: flex;
+			margin: 0 20px;
+		}
+
+		.dot {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background-color: rgba(255, 255, 255, 0.5);
+			margin: 0 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		.dot.active {
+			background-color: white;
+		}
+
+		.slider-arrow {
+			background-color: rgba(0, 0, 0, 0.5);
+			color: white;
+			border: none;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: background-color 0.3s ease;
+		}
+
+		.slider-arrow:hover {
+			background-color: rgba(0, 0, 0, 0.8);
+		}
+
+		.slider-prev {
+			margin-right: 10px;
+		}
+
+		.slider-next {
+			margin-left: 10px;
+		}
+
+		/* 响应式调整 */
+		@media (max-width: 992px) {
+			.hero-slider-container {
+				height: 500px;
+			}
+
+			.hero-content h1 {
+				font-size: 40px;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.hero-slider-container {
+				height: 400px;
+			}
+
+			.hero-content h1 {
+				font-size: 32px;
+			}
+		}
+
+		@media (max-width: 576px) {
+			.hero-slider-container {
+				height: 350px;
+			}
+
+			.hero-content h1 {
+				font-size: 28px;
+			}
+		}
+
+		/* 排行区域 */
+		.rank-section {
+			padding: 80px 0;
+			background-color: var(--secondary-color);
+		}
+
+		.ranking-tabs {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 30px;
+		}
+
+		.ranking-tab-btn {
+			padding: 10px 20px;
+			background-color: var(--primary-color);
+			color: var(--text-color);
+			border: none;
+			margin: 0 5px;
+			border-radius: 4px;
+			cursor: pointer;
+			transition: var(--transition);
+		}
+
+		.ranking-tab-btn:hover {
+			background-color: var(--accent-color);
+		}
+
+		.ranking-content {
+			display: none;
+		}
+
+		.ranking-content.active {
+			display: block;
+		}
+
+		.ranking-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			gap: 20px;
+		}
+
+		.ranking-item {
+			background-color: var(--primary-color);
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: var(--card-shadow);
+			transition: var(--transition);
+		}
+
+		.ranking-item:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+		}
+
+		.ranking-img {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+		}
+
+		.ranking-info {
+			padding: 15px;
+		}
+
+		.ranking-title {
+			font-size: 16px;
+			font-weight: 600;
+			margin-bottom: 5px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.ranking-meta {
+			color: #bdc3c7;
+			font-size: 12px;
+			margin-bottom: 5px;
+		}
+
+		.ranking-rating {
+			color: #f1c40f;
+			font-size: 14px;
+		}
+
+		/* 自定义滚动条 */
+		::-webkit-scrollbar {
+			width: 8px;
+		}
+
+		::-webkit-scrollbar-track {
+			background: var(--secondary-color);
+		}
+
+		::-webkit-scrollbar-thumb {
+			background: var(--accent-color);
+			border-radius: 4px;
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+			background: #c0392b;
+		}
+	</style>
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar">
+	<div class="container navbar-container">
+		<a href="/index" class="logo"><span>Film</span>Elite</a>
+
+		<button class="mobile-menu-btn">
+			<i class="fas fa-bars"></i>
+		</button>
+
+		<ul class="nav-links">
+			<li><a href="/index">首页</a></li>
+			<li class="nav-dropdown">
+				<a href="#">类型 <i class="fas fa-chevron-down"></i></a>
+				<div class="dropdown-content">
+					<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 10px;">
+						<div>
+							<h4 style="margin-bottom: 10px; font-weight: 600; color: var(--accent-color);">地区</h4>
+							<a href="/huayu">华语</a>
+							<a href="/oumei">欧美</a>
+							<a href="/rihan">日韩</a>
+						</div>
+						<div>
+							<h4 style="margin-bottom: 10px; font-weight: 600; color: var(--accent-color);">电影类型</h4>
+							<a href="/science">喜剧</a>
+							<a href="/action">动作</a>
+							<a href="/sf">科幻</a>
+							<a href="/love">爱情</a>
+							<a href="/suspense">悬疑</a>
+						</div>
+						<div>
+							<h4 style="margin-bottom: 10px; font-weight: 600; color: var(--accent-color);">其他类型</h4>
+							<a href="/crime">犯罪</a>
+							<a href="/adventure">冒险</a>
+							<a href="/war">战争</a>
+							<a href="/disaster">灾难</a>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li><a href="/series">排行</a></li>
+			<li><a href="/news">新闻</a></li>
+			<li><a href="/user">个人中心</a></li>
+			<li><a href="/data">数据管理</a></li>
+		</ul>
+
+		<div class="search-container">
+			<input type="text" class="search-input" placeholder="搜索电影、演员或导演...">
+			<button class="search-btn"><i class="fas fa-search"></i></button>
+		</div>
+	</div>
+</nav>
+
+<!--&lt;!&ndash; 主横幅轮播&ndash;&gt;-->
+<!--<div class="hero-slider-container">-->
+<!--	<div class="hero-slider">-->
+<!--		<div class="hero-slide active" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/1.jpg'); background-size: cover; background-position: center;">-->
+<!--			<div class="hero-content">-->
+<!--				<h1>最新 <span style="color: var(&#45;&#45;accent-color);">大片</span> 上映</h1>-->
+<!--				<p>探索 Film Elite 提供的高品质影视内容，开启您的视觉盛宴</p>-->
+<!--				<a href="#movies" class="btn">立即探索</a>-->
+<!--			</div>-->
+<!--		</div>-->
+
+<!--		<div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/2.jpg'); background-size: cover; background-position: center;">-->
+<!--			<div class="hero-content">-->
+<!--				<h1>VIP <span style="color: var(&#45;&#45;accent-color);">尊享</span> 会员特权</h1>-->
+<!--				<p>探索 Film Elite 提供的高品质影视内容，开启您的视觉盛宴</p>-->
+<!--				<a href="/vip" class="btn">开通VIP</a>-->
+<!--			</div>-->
+<!--		</div>-->
+
+<!--		<div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/3.jpg'); background-size: cover; background-position: center;">-->
+<!--			<div class="hero-content">-->
+<!--				<h1>热门 <span style="color: var(&#45;&#45;accent-color);">剧集</span> 连载中</h1>-->
+<!--				<p>探索 Film Elite 提供的高品质影视内容，开启您的视觉盛宴</p>-->
+<!--				<a href="/series" class="btn">查看剧集</a>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!--	<div class="slider-controls">-->
+<!--		<button class="slider-arrow slider-prev"><i class="fas fa-chevron-left"></i></button>-->
+<!--		<div class="slider-dots">-->
+<!--			<span class="dot active" data-index="0"></span>-->
+<!--			<span class="dot" data-index="1"></span>-->
+<!--			<span class="dot" data-index="2"></span>-->
+<!--		</div>-->
+<!--		<button class="slider-arrow slider-next"><i class="fas fa-chevron-right"></i></button>-->
+<!--	</div>-->
+<!--</div>-->
+
+<!-- 排行区域 -->
+<section class="rank-section">
+	<div class="container">
+		<div class="section-title">
+			<h2>系列排行</h2>
+		</div>
+
+		<div class="ranking-tabs">
+			<button class="ranking-tab-btn active" data-tab="weekly">周排行</button>
+			<button class="ranking-tab-btn" data-tab="monthly">月排行</button>
+			<button class="ranking-tab-btn" data-tab="total">总排行</button>
+			<button class="ranking-tab-btn" data-tab="rating">好评排行</button>
+		</div>
+
+		<div class="ranking-content active" id="weekly">
+			<div class="ranking-grid">
+				<div class="ranking-item">
+					<img src="/movies/images/15.png" alt="这个杀手不太冷" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">这个杀手不太冷</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">9 分</span></p>
+						<p class="ranking-meta">观看人次：300万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/1.png" alt="坚如磐石" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">坚如磐石</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">6.0 分</span></p>
+						<p class="ranking-meta">观看人次：280万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/6.png" alt="毒液：致命守护者 Venom" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">毒液：致命守护者 Venom</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">7.2 分</span></p>
+						<p class="ranking-meta">观看人次：276万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/7.png" alt="名侦探柯南：贝克街的亡灵" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">名侦探柯南：贝克街的亡灵</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.8 分</span></p>
+						<p class="ranking-meta">观看人次：265万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/13.png" alt="第二十条" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">第二十条</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">7.6 分</span></p>
+						<p class="ranking-meta">观看人次：260万</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ranking-content" id="monthly">
+			<div class="ranking-grid">
+				<div class="ranking-item">
+					<img src="/movies/images/18.png" alt="盗梦空间" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">盗梦空间</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">9.4 分</span></p>
+						<p class="ranking-meta">观看人次：2239万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/38.png" alt="釜山行" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">釜山行</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.6 分</span></p>
+						<p class="ranking-meta">观看人次：2000万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/33.png" alt="沙丘2 Dune: Part Two" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">沙丘2 Dune: Part Two</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.2 分</span></p>
+						<p class="ranking-meta">观看人次：1876万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/7.png" alt="名侦探柯南：贝克街的亡灵" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">名侦探柯南：贝克街的亡灵</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.8 分</span></p>
+						<p class="ranking-meta">观看人次：1565万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/13.png" alt="第二十条" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">第二十条</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">7.6 分</span></p>
+						<p class="ranking-meta">观看人次：1280万</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ranking-content" id="total">
+			<div class="ranking-grid">
+				<div class="ranking-item">
+					<img src="/movies/images/18.png" alt="盗梦空间" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">盗梦空间</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">9.4 分</span></p>
+						<p class="ranking-meta">观看人次：2239万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/38.png" alt="釜山行" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">釜山行</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.6 分</span></p>
+						<p class="ranking-meta">观看人次：2000万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/33.png" alt="沙丘2 Dune: Part Two" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">沙丘2 Dune: Part Two</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.2 分</span></p>
+						<p class="ranking-meta">观看人次：1876万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/7.png" alt="名侦探柯南：贝克街的亡灵" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">名侦探柯南：贝克街的亡灵</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.8 分</span></p>
+						<p class="ranking-meta">观看人次：1565万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/13.png" alt="第二十条" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">第二十条</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">7.6 分</span></p>
+						<p class="ranking-meta">观看人次：1280万</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ranking-content" id="rating">
+			<div class="ranking-grid">
+				<div class="ranking-item">
+					<img src="/movies/images/18.png" alt="盗梦空间" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">盗梦空间</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">9.4 分</span></p>
+						<p class="ranking-meta">观看人次：2239万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/38.png" alt="釜山行" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">釜山行</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.6 分</span></p>
+						<p class="ranking-meta">观看人次：2000万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/33.png" alt="沙丘2 Dune: Part Two" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">沙丘2 Dune: Part Two</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.2 分</span></p>
+						<p class="ranking-meta">观看人次：1876万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/7.png" alt="名侦探柯南：贝克街的亡灵" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">名侦探柯南：贝克街的亡灵</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">8.8 分</span></p>
+						<p class="ranking-meta">观看人次：1565万</p>
+					</div>
+				</div>
+
+				<div class="ranking-item">
+					<img src="/movies/images/13.png" alt="第二十条" class="ranking-img">
+					<div class="ranking-info">
+						<h3 class="ranking-title">第二十条</h3>
+						<p class="ranking-meta">评分：<span class="ranking-rating">7.6 分</span></p>
+						<p class="ranking-meta">观看人次：1280万</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- 电影推荐区域 -->
+<section class="movies-section" id="recommendations">
+	<div class="container">
+		<div class="section-title">
+			<h2>更多电影推荐</h2>
+		</div>
+
+		<div class="movie-grid">
+			<div class="movie-card">
+				<div class="movie-img-container">
+					<img src="/movies/images/m5.jpg" alt="Storks" class="movie-img">
+					<div class="play-btn">
+						<i class="fas fa-play"></i>
+					</div>
+				</div>
+				<div class="movie-info">
+					<h3 class="movie-title">Storks</h3>
+					<div class="movie-meta">
+						<span>2016</span>
+						<span class="movie-rating">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star-half-alt"></i>
+							</span>
+					</div>
+					<span class="movie-category">动画 | 喜剧</span>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<div class="movie-img-container">
+					<img src="/movies/images/m8.jpg" alt="Timeless" class="movie-img">
+					<div class="play-btn">
+						<i class="fas fa-play"></i>
+					</div>
+				</div>
+				<div class="movie-info">
+					<h3 class="movie-title">Timeless</h3>
+					<div class="movie-meta">
+						<span>2016</span>
+						<span class="movie-rating">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="far fa-star"></i>
+								<i class="far fa-star"></i>
+							</span>
+					</div>
+					<span class="movie-category">科幻 | 剧情</span>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<div class="movie-img-container">
+					<img src="/movies/images/m3.jpg" alt="Deadpool" class="movie-img">
+					<div class="play-btn">
+						<i class="fas fa-play"></i>
+					</div>
+					<div class="vip-badge">VIP</div>
+				</div>
+				<div class="movie-info">
+					<h3 class="movie-title">Deadpool</h3>
+					<div class="movie-meta">
+						<span>2016</span>
+						<span class="movie-rating">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star-half-alt"></i>
+								<i class="far fa-star"></i>
+							</span>
+					</div>
+					<span class="movie-category">动作 | 喜剧</span>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<div class="movie-img-container">
+					<img src="/movies/images/m11.jpg" alt="Warcraft" class="movie-img">
+					<div class="play-btn">
+						<i class="fas fa-play"></i>
+					</div>
+				</div>
+				<div class="movie-info">
+					<h3 class="movie-title">Warcraft</h3>
+					<div class="movie-meta">
+						<span>2016</span>
+						<span class="movie-rating">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star-half-alt"></i>
+							</span>
+					</div>
+					<span class="movie-category">科幻 | 奇幻</span>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<div class="movie-img-container">
+					<img src="/movies/images/m14.jpg" alt="Rambo 4" class="movie-img">
+					<div class="play-btn">
+						<i class="fas fa-play"></i>
+					</div>
+				</div>
+				<div class="movie-info">
+					<h3 class="movie-title">Rambo 4</h3>
+					<div class="movie-meta">
+						<span>2016</span>
+						<span class="movie-rating">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star-half-alt"></i>
+								<i class="far fa-star"></i>
+								<i class="far fa-star"></i>
+								<i class="far fa-star"></i>
+							</span>
+					</div>
+					<span class="movie-category">动作 | 冒险</span>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<div class="movie-img-container">
+					<img src="/movies/images/m13.jpg" alt="Ghostbuster" class="movie-img">
+					<div class="play-btn">
+						<i class="fas fa-play"></i>
+					</div>
+				</div>
+				<div class="movie-info">
+					<h3 class="movie-title">Ghostbuster</h3>
+					<div class="movie-meta">
+						<span>2016</span>
+						<span class="movie-rating">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star-half-alt"></i>
+								<i class="far fa-star"></i>
+							</span>
+					</div>
+					<span class="movie-category">喜剧 | 科幻</span>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<div class="movie-img-container">
+					<img src="/movies/images/m15.jpg" alt="RoboCop" class="movie-img">
+					<div class="play-btn">
+						<i class="fas fa-play"></i>
+					</div>
+				</div>
+				<div class="movie-info">
+					<h3 class="movie-title">RoboCop</h3>
+					<div class="movie-meta">
+						<span>2016</span>
+						<span class="movie-rating">
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="fas fa-star"></i>
+								<i class="far fa-star"></i>
+							</span>
+					</div>
+					<span class="movie-category">动作 | 科幻</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer">
+	<div class="container">
+		<div class="footer-content">
+			<div class="footer-about">
+				<a href="/index" class="footer-logo"><span>Film</span>Elite</a>
+				<p>Film Elite 是您的高端影视观看平台，提供最新、最热门的电影和剧集，让您足不出户享受影院级观影体验。</p>
+				<div class="social-links">
+					<a href="#"><i class="fab fa-facebook-f"></i></a>
+					<a href="#"><i class="fab fa-twitter"></i></a>
+					<a href="#"><i class="fab fa-instagram"></i></a>
+					<a href="#"><i class="fab fa-youtube"></i></a>
+				</div>
+			</div>
+
+			<div class="footer-links-container">
+				<h3 class="footer-title">快速链接</h3>
+				<ul class="footer-links">
+					<li><a href="/index">首页</a></li>
+					<li><a href="/series">排行榜</a></li>
+					<li><a href="/news">新闻</a></li>
+					<li><a href="/about">关于我们</a></li>
+					<li><a href="/contact">联系方式</a></li>
+				</ul>
+			</div>
+
+			<div class="footer-links-container">
+				<h3 class="footer-title">电影类型</h3>
+				<ul class="footer-links">
+					<li><a href="/science">喜剧</a></li>
+					<li><a href="/action">动作</a></li>
+					<li><a href="/sf">科幻</a></li>
+					<li><a href="/love">爱情</a></li>
+					<li><a href="/suspense">悬疑</a></li>
+				</ul>
+			</div>
+
+			<div class="footer-contact">
+				<h3 class="footer-title">联系我们</h3>
+				<p><i class="fas fa-map-marker-alt"></i> 北京市朝阳区影视大厦A座</p>
+				<p><i class="fas fa-phone"></i> 400-123-4567</p>
+				<p><i class="fas fa-envelope"></i> info@filmelite.com</p>
+			</div>
+		</div>
+
+		<div class="footer-bottom">
+			<p>&copy; 2023 Film Elite. 保留所有权利。</p>
+		</div>
+	</div>
+</footer>
+
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	// 主横幅轮播功能
+	document.addEventListener('DOMContentLoaded', function() {
+		const slides = document.querySelectorAll('.hero-slide');
+		const dots = document.querySelectorAll('.dot');
+		const prevBtn = document.querySelector('.slider-prev');
+		const nextBtn = document.querySelector('.slider-next');
+		let currentIndex = 0;
+		const interval = 5000;
+		let autoSlideInterval;
+
+		// 修复1：初始化时显示第一张幻灯片
+		showSlide(currentIndex);
+
+		function showSlide(index) {
+			slides.forEach((slide, i) => {
+				slide.style.opacity = i === index ? '1' : '0';
+				slide.style.pointerEvents = i === index ? 'auto' : 'none'; // 修复3
+			});
+
+			dots.forEach(dot => dot.classList.remove('active'));
+			dots[index].classList.add('active');
+		}
+
+		function nextSlide() {
+			currentIndex = (currentIndex + 1) % slides.length;
+			showSlide(currentIndex);
+		}
+
+		function prevSlide() {
+			// 修复2：正确的索引计算
+			currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+			showSlide(currentIndex);
+		}
+
+		// 开始自动轮播
+		function startAutoSlide() {
+			autoSlideInterval = setInterval(nextSlide, interval);
+		}
+
+		// 停止自动轮播
+		function stopAutoSlide() {
+			clearInterval(autoSlideInterval);
+		}
+
+		// 点击导航点切换幻灯片
+		dots.forEach(dot => {
+			dot.addEventListener('click', function() {
+				currentIndex = parseInt(this.getAttribute('data-index'));
+				showSlide(currentIndex);
+				stopAutoSlide();
+				startAutoSlide();
+			});
+		});
+
+		// 点击按钮切换幻灯片
+		prevBtn.addEventListener('click', function() {
+			prevSlide();
+			stopAutoSlide();
+			startAutoSlide();
+		});
+
+		nextBtn.addEventListener('click', function() {
+			nextSlide();
+			stopAutoSlide();
+			startAutoSlide();
+		});
+
+		// 鼠标悬停时暂停自动轮播
+		document.querySelector('.hero-slider-container').addEventListener('mouseenter', stopAutoSlide);
+		document.querySelector('.hero-slider-container').addEventListener('mouseleave', startAutoSlide);
+
+		// 开始自动轮播
+		startAutoSlide();
+	});
+
+	// 排行标签切换
+	document.addEventListener('DOMContentLoaded', function() {
+		const tabBtns = document.querySelectorAll('.ranking-tab-btn');
+		const tabContents = document.querySelectorAll('.ranking-content');
+
+		tabBtns.forEach(btn => {
+			btn.addEventListener('click', function() {
+				// 移除所有按钮的 active 类
+				tabBtns.forEach(b => b.classList.remove('active'));
+				// 为当前点击的按钮添加 active 类
+				this.classList.add('active');
+
+				// 隐藏所有内容
+				tabContents.forEach(content => content.classList.remove('active'));
+				// 显示对应的内容
+				const tabId = this.getAttribute('data-tab');
+				document.getElementById(tabId).classList.add('active');
+			});
+		});
+	});
+
+	// 移动端菜单切换
+	document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+		document.body.classList.toggle('mobile-menu-active');
+	});
+</script>
+</body>
+</html>

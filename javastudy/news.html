@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Film Elite - 新闻资讯</title>
+	<meta name="description" content="Film Elite - 您的高端影视观看平台，提供最新、最热门的电影和剧集">
+
+	<!-- Font Awesome 图标库 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+	<!-- 自定义CSS -->
+	<style>
+		/* 全局样式 */
+		:root {
+			--primary-color: #1a2a3a;
+			--secondary-color: #2c3e50;
+			--accent-color: #e67e22;
+			--text-color: #f5f5f5;
+			--dark-text: #34495e;
+			--light-bg: #f8f9fa;
+			--card-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+			--transition: all 0.3s ease;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Raleway', sans-serif;
+			background-color: var(--primary-color);
+			color: var(--text-color);
+			line-height: 1.6;
+		}
+
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 20px;
+		}
+
+		/* 按钮样式 */
+		.btn {
+			display: inline-block;
+			padding: 12px 24px;
+			background-color: var(--accent-color);
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			transition: var(--transition);
+			text-decoration: none;
+		}
+
+		.btn:hover {
+			background-color: #d35400;
+			transform: translateY(-2px);
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+		}
+
+		.btn-outline {
+			background-color: transparent;
+			border: 2px solid var(--accent-color);
+			color: var(--accent-color);
+		}
+
+		.btn-outline:hover {
+			background-color: var(--accent-color);
+			color: white;
+		}
+
+		/* 导航栏样式 */
+		.navbar {
+			background-color: rgba(26, 42, 58, 0.95);
+			padding: 15px 0;
+			position: sticky;
+			top: 0;
+			z-index: 1000;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		}
+
+		.navbar-container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.logo {
+			font-family: 'Montserrat', sans-serif;
+			font-weight: 700;
+			font-size: 24px;
+			color: var(--text-color);
+			text-decoration: none;
+		}
+
+		.logo span {
+			color: var(--accent-color);
+		}
+
+		.nav-links {
+			display: flex;
+			list-style: none;
+		}
+
+		.nav-links li {
+			margin-left: 30px;
+		}
+
+		.nav-links a {
+			color: var(--text-color);
+			text-decoration: none;
+			font-weight: 500;
+			transition: var(--transition);
+			position: relative;
+		}
+
+		.nav-links a:after {
+			content: '';
+			position: absolute;
+			width: 0;
+			height: 2px;
+			bottom: -5px;
+			left: 0;
+			background-color: var(--accent-color);
+			transition: var(--transition);
+		}
+
+		.nav-links a:hover:after {
+			width: 100%;
+		}
+
+		.nav-dropdown {
+			position: relative;
+		}
+
+		.dropdown-content {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			background-color: var(--secondary-color);
+			min-width: 200px;
+			box-shadow: var(--card-shadow);
+			border-radius: 4px;
+			padding: 10px 0;
+			opacity: 0;
+			visibility: hidden;
+			transform: translateY(10px);
+			transition: var(--transition);
+			z-index: 1;
+		}
+
+		.nav-dropdown:hover .dropdown-content {
+			opacity: 1;
+			visibility: visible;
+			transform: translateY(0);
+		}
+
+		.dropdown-content a {
+			display: block;
+			padding: 8px 15px;
+			color: var(--text-color);
+			text-decoration: none;
+			transition: var(--transition);
+		}
+
+		.dropdown-content a:hover {
+			background-color: rgba(230, 126, 34, 0.1);
+		}
+
+		.mobile-menu-btn {
+			display: none;
+			background: none;
+			border: none;
+			color: var(--text-color);
+			font-size: 24px;
+			cursor: pointer;
+		}
+
+		/* 搜索框 */
+		.search-container {
+			position: relative;
+			margin-left: 30px;
+		}
+
+		.search-input {
+			padding: 8px 15px;
+			padding-right: 40px;
+			border: none;
+			border-radius: 4px;
+			background-color: rgba(255, 255, 255, 0.1);
+			color: var(--text-color);
+			width: 200px;
+			transition: var(--transition);
+		}
+
+		.search-input:focus {
+			outline: none;
+			background-color: rgba(255, 255, 255, 0.2);
+			width: 250px;
+		}
+
+		.search-btn {
+			position: absolute;
+			right: 10px;
+			top: 50%;
+			transform: translateY(-50%);
+			background: none;
+			border: none;
+			color: var(--text-color);
+			cursor: pointer;
+		}
+
+		/* 主横幅区域 */
+		.hero {
+			height: 400px;
+			background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/banner-bg-news.jpg');
+			background-size: cover;
+			background-position: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			padding: 0 20px;
+		}
+
+		.hero-content {
+			max-width: 800px;
+		}
+
+		.hero h1 {
+			font-size: 48px;
+			font-weight: 700;
+			margin-bottom: 20px;
+			letter-spacing: 2px;
+		}
+
+		.hero p {
+			font-size: 18px;
+			margin-bottom: 30px;
+		}
+
+		/* 面包屑导航 */
+		.breadcrumb {
+			padding: 15px 0;
+			background-color: var(--secondary-color);
+		}
+
+		.breadcrumb .container {
+			display: flex;
+			align-items: center;
+		}
+
+		.breadcrumb-item {
+			color: var(--text-color);
+			text-decoration: none;
+			position: relative;
+		}
+
+		.breadcrumb-item:not(:last-child):after {
+			content: "//";
+			position: absolute;
+			right: -20px;
+		}
+
+		/* 新闻内容区域 */
+		.news-section {
+			padding: 80px 0;
+			background-color: var(--primary-color);
+		}
+
+		.section-title {
+			text-align: center;
+			margin-bottom: 50px;
+		}
+
+		.section-title h2 {
+			font-size: 36px;
+			font-weight: 700;
+			position: relative;
+			display: inline-block;
+			padding-bottom: 15px;
+		}
+
+		.section-title h2:after {
+			content: '';
+			position: absolute;
+			width: 60px;
+			height: 3px;
+			background-color: var(--accent-color);
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		.news-container {
+			display: grid;
+			grid-template-columns: 2fr 1fr;
+			gap: 30px;
+		}
+
+		.news-main {
+			background-color: var(--secondary-color);
+			border-radius: 8px;
+			padding: 30px;
+			box-shadow: var(--card-shadow);
+		}
+
+		.news-item {
+			display: grid;
+			grid-template-columns: 1fr 2fr;
+			gap: 20px;
+			padding: 20px 0;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.news-item:last-child {
+			border-bottom: none;
+		}
+
+		.news-img {
+			width: 100%;
+			height: 150px;
+			object-fit: cover;
+			border-radius: 4px;
+		}
+
+		.news-content h3 {
+			font-size: 20px;
+			margin-bottom: 10px;
+		}
+
+		.news-meta {
+			color: #bdc3c7;
+			font-size: 14px;
+			margin-bottom: 10px;
+		}
+
+		.news-text {
+			margin-bottom: 15px;
+		}
+
+		.read-more {
+			color: var(--accent-color);
+			text-decoration: none;
+			font-weight: 600;
+			transition: var(--transition);
+		}
+
+		.read-more:hover {
+			color: #d35400;
+		}
+
+		/* 侧边栏 */
+		.news-sidebar {
+			display: flex;
+			flex-direction: column;
+			gap: 30px;
+		}
+
+		.sidebar-widget {
+			background-color: var(--secondary-color);
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: var(--card-shadow);
+		}
+
+		.widget-title {
+			font-size: 20px;
+			font-weight: 600;
+			margin-bottom: 15px;
+			color: var(--accent-color);
+		}
+
+		.sidebar-news-item {
+			padding: 15px 0;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.sidebar-news-item:last-child {
+			border-bottom: none;
+		}
+
+		.sidebar-news-item a {
+			color: var(--text-color);
+			text-decoration: none;
+			transition: var(--transition);
+		}
+
+		.sidebar-news-item a:hover {
+			color: var(--accent-color);
+		}
+
+		.sidebar-news-meta {
+			color: #bdc3c7;
+			font-size: 12px;
+			margin-top: 5px;
+		}
+
+		/* 分页导航 */
+		.pagination {
+			display: flex;
+			justify-content: center;
+			margin-top: 50px;
+		}
+
+		.page-item {
+			margin: 0 5px;
+		}
+
+		.page-link {
+			display: block;
+			width: 40px;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			background-color: var(--secondary-color);
+			color: var(--text-color);
+			text-decoration: none;
+			transition: var(--transition);
+		}
+
+		.page-link:hover, .page-item.active .page-link {
+			background-color: var(--accent-color);
+			color: white;
+		}
+
+		/* 页脚样式 */
+		.footer {
+			background-color: var(--secondary-color);
+			padding: 60px 0 20px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.footer-content {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 30px;
+			margin-bottom: 40px;
+		}
+
+		.footer-logo {
+			font-family: 'Montserrat', sans-serif;
+			font-size: 24px;
+			font-weight: 700;
+			color: var(--text-color);
+			margin-bottom: 15px;
+			display: block;
+		}
+
+		.footer-logo span {
+			color: var(--accent-color);
+		}
+
+		.footer-about p {
+			margin-bottom: 20px;
+			color: #bdc3c7;
+		}
+
+		.social-links {
+			display: flex;
+		}
+
+		.social-links a {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 36px;
+			height: 36px;
+			background-color: rgba(255, 255, 255, 0.1);
+			border-radius: 50%;
+			margin-right: 10px;
+			color: var(--text-color);
+			transition: var(--transition);
+		}
+
+		.social-links a:hover {
+			background-color: var(--accent-color);
+			color: white;
+		}
+
+		.footer-title {
+			font-size: 18px;
+			font-weight: 600;
+			margin-bottom: 20px;
+			position: relative;
+			padding-bottom: 10px;
+		}
+
+		.footer-title:after {
+			content: '';
+			position: absolute;
+			width: 40px;
+			height: 2px;
+			background-color: var(--accent-color);
+			bottom: 0;
+			left: 0;
+		}
+
+		.footer-links {
+			list-style: none;
+		}
+
+		.footer-links li {
+			margin-bottom: 10px;
+		}
+
+		.footer-links a {
+			color: #bdc3c7;
+			text-decoration: none;
+			transition: var(--transition);
+		}
+
+		.footer-links a:hover {
+			color: var(--accent-color);
+			padding-left: 5px;
+		}
+
+		.footer-contact p {
+			display: flex;
+			align-items: flex-start;
+			margin-bottom: 15px;
+			color: #bdc3c7;
+		}
+
+		.footer-contact i {
+			margin-right: 10px;
+			color: var(--accent-color);
+		}
+
+		.footer-bottom {
+			text-align: center;
+			padding-top: 20px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+			color: #bdc3c7;
+			font-size: 14px;
+		}
+
+		/* 登录模态框 */
+		.modal-dialog {
+			max-width: 400px;
+		}
+
+		.modal-content {
+			border-radius: 8px;
+			overflow: hidden;
+			border: none;
+		}
+
+		.modal-header {
+			background-color: var(--secondary-color);
+			padding: 15px 20px;
+			border-bottom: none;
+		}
+
+		.modal-title {
+			font-weight: 600;
+			color: var(--text-color);
+		}
+
+		.modal-body {
+			padding: 20px;
+		}
+
+		.form-control {
+			height: 45px;
+			border-radius: 4px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			background-color: rgba(255, 255, 255, 0.05);
+			color: var(--text-color);
+			padding: 0 15px;
+			margin-bottom: 20px;
+		}
+
+		.form-control:focus {
+			outline: none;
+			border-color: var(--accent-color);
+			box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
+		}
+
+		.checkbox-container {
+			display: flex;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+		.checkbox-container input {
+			margin-right: 10px;
+		}
+
+		.checkbox-container label {
+			color: #bdc3c7;
+		}
+
+		.form-footer {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.forgot-password {
+			color: var(--accent-color);
+			text-decoration: none;
+		}
+
+		.forgot-password:hover {
+			text-decoration: underline;
+		}
+
+		/* 响应式设计 */
+		@media (max-width: 992px) {
+			.hero h1 {
+				font-size: 40px;
+			}
+
+			.section-title h2 {
+				font-size: 32px;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.news-container {
+				grid-template-columns: 1fr;
+			}
+
+			.nav-links, .search-container {
+				display: none;
+			}
+
+			.mobile-menu-btn {
+				display: block;
+			}
+
+			.mobile-menu-active .nav-links {
+				display: flex;
+				flex-direction: column;
+				position: absolute;
+				top: 70px;
+				left: 0;
+				right: 0;
+				background-color: var(--secondary-color);
+				padding: 20px;
+				box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+			}
+
+			.mobile-menu-active .nav-links li {
+				margin: 10px 0;
+			}
+
+			.hero {
+				height: 300px;
+			}
+
+			.hero h1 {
+				font-size: 36px;
+			}
+		}
+
+		@media (max-width: 576px) {
+			.hero {
+				height: 250px;
+			}
+
+			.hero h1 {
+				font-size: 28px;
+			}
+
+			.section-title h2 {
+				font-size: 28px;
+			}
+		}
+	</style>
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar">
+	<div class="container navbar-container">
+		<a href="/index" class="logo"><span>Film</span>Elite</a>
+
+		<button class="mobile-menu-btn">
+			<i class="fas fa-bars"></i>
+		</button>
+
+		<ul class="nav-links">
+			<li><a href="/index">首页</a></li>
+			<li class="nav-dropdown">
+				<a href="#">类型 <i class="fas fa-chevron-down"></i></a>
+				<div class="dropdown-content">
+					<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 10px;">
+						<div>
+							<h4 style="margin-bottom: 10px; font-weight: 600; color: var(--accent-color);">地区</h4>
+							<a href="/huayu">华语</a>
+							<a href="/oumei">欧美</a>
+							<a href="/rihan">日韩</a>
+						</div>
+						<div>
+							<h4 style="margin-bottom: 10px; font-weight: 600; color: var(--accent-color);">电影类型</h4>
+							<a href="/science">喜剧</a>
+							<a href="/action">动作</a>
+							<a href="/sf">科幻</a>
+							<a href="/love">爱情</a>
+							<a href="/suspense">悬疑</a>
+						</div>
+						<div>
+							<h4 style="margin-bottom: 10px; font-weight: 600; color: var(--accent-color);">其他类型</h4>
+							<a href="/crime">犯罪</a>
+							<a href="/adventure">冒险</a>
+							<a href="/war">战争</a>
+							<a href="/disaster">灾难</a>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li><a href="/series">排行</a></li>
+			<li><a href="/news">新闻</a></li>
+			<li><a href="/user">个人中心</a></li>
+			<li><a href="/data">数据管理</a></li>
+		</ul>
+
+		<div class="search-container">
+			<input type="text" class="search-input" placeholder="搜索电影、演员或导演...">
+			<button class="search-btn"><i class="fas fa-search"></i></button>
+		</div>
+	</div>
+</nav>
+
+<!-- 主横幅 -->
+<div class="hero">
+	<div class="hero-content">
+		<h1>最新 <span style="color: var(--accent-color);">影视资讯</span></h1>
+		<p>探索 Film Elite 提供的最新影视动态，掌握行业前沿信息</p>
+	</div>
+</div>
+
+<!-- 面包屑导航 -->
+<div class="breadcrumb">
+	<div class="container">
+		<a href="/index" class="breadcrumb-item">首页</a>
+		<a href="/news" class="breadcrumb-item">新闻</a>
+	</div>
+</div>
+
+<!-- 新闻内容区域 -->
+<section class="news-section">
+	<div class="container">
+		<div class="section-title">
+			<h2>影视新闻</h2>
+		</div>
+
+		<div class="news-container">
+			<!-- 主要内容区 -->
+			<div class="news-main">
+				<div class="news-item">
+					<img src="images/m1.jpg" alt="泰坦尼克号" class="news-img">
+					<div class="news-content">
+						<h3>9.5分神作！《泰坦尼克号》</h3>
+						<div class="news-meta">by <a href="#">Film Elite</a> on 2024年5月25日</div>
+						<p class="news-text">1912年4月10日，号称 "世界工业史上的奇迹" 的豪华客轮泰坦尼克号开始了自己的处女航，从英国的南安普顿出发驶往美国纽约。富家少女罗丝与母亲及未婚夫卡尔坐上了头等舱；另一边，放荡不羁的少年画家杰克也在码头的一场赌博中赢得了下等舱的船票。星期天晚上，一个风平浪静的夜晚。泰坦尼克号撞上了冰山，"永不沉没的" 泰坦尼克号面临沉船的命运，罗丝和杰克刚萌芽的爱情也将经历生死的考验。</p>
+						<a href="/newssingle" class="read-more">阅读全文</a>
+					</div>
+				</div>
+
+				<div class="news-item">
+					<img src="images/m2.jpg" alt="Me Before You" class="news-img">
+					<div class="news-content">
+						<h3>《ME BEFORE YOU》</h3>
+						<div class="news-meta">by <a href="#">Admin</a> on 2016年10月30日</div>
+						<p class="news-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae eros eget tellus tristique bibendum.Sed tristique mattis fermentum. Etiam semper aliquet massa, id tempus massa mattis eget.</p>
+						<a href="/newssingle" class="read-more">阅读全文</a>
+					</div>
+				</div>
+
+				<div class="news-item">
+					<img src="images/m3.jpg" alt="Deadpool" class="news-img">
+					<div class="news-content">
+						<h3>死侍</h3>
+						<div class="news-meta">by <a href="#">Admin</a> on 2016年10月30日</div>
+						<p class="news-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae eros eget tellus tristique bibendum.Sed tristique mattis fermentum. Etiam semper aliquet massa, id tempus massa mattis eget.</p>
+						<a href="/newssingle" class="read-more">阅读全文</a>
+					</div>
+				</div>
+
+				<div class="news-item">
+					<img src="images/m4.jpg" alt="热辣滚烫" class="news-img">
+					<div class="news-content">
+						<h3>热辣滚烫</h3>
+						<div class="news-meta">by <a href="#">Admin</a> on 2016年10月30日</div>
+						<p class="news-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae eros eget tellus tristique bibendum.Sed tristique mattis fermentum. Etiam semper aliquet massa, id tempus massa mattis eget.</p>
+						<a href="/newssingle" class="read-more">阅读全文</a>
+					</div>
+				</div>
+
+				<div class="news-item">
+					<img src="images/m5.jpg" alt="Storks" class="news-img">
+					<div class="news-content">
+						<h3>Storks</h3>
+						<div class="news-meta">by <a href="#">Admin</a> on 2016年10月30日</div>
+						<p class="news-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae eros eget tellus tristique bibendum.Sed tristique mattis fermentum. Etiam semper aliquet massa, id tempus massa mattis eget.</p>
+						<a href="/newssingle" class="read-more">阅读全文</a>
+					</div>
+				</div>
+
+				<div class="news-item">
+					<img src="images/m6.jpg" alt="消失的她" class="news-img">
+					<div class="news-content">
+						<h3>消失的她</h3>
+						<div class="news-meta">by <a href="#">Admin</a> on 2016年10月30日</div>
+						<p class="news-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae eros eget tellus tristique bibendum.Sed tristique mattis fermentum. Etiam semper aliquet massa, id tempus massa mattis eget.</p>
+						<a href="/newssingle" class="read-more">阅读全文</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- 侧边栏 -->
+			<div class="news-sidebar">
+				<div class="sidebar-widget">
+					<h3 class="widget-title">热门话题</h3>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">9.5分神作！点此观看……</a>
+						<div class="sidebar-news-meta">2024年5月25日</div>
+					</div>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">泰坦尼克号！！两个人找到了他们的爱……</a>
+						<div class="sidebar-news-meta">2024年5月25日</div>
+					</div>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">Storks have moved on from delivering babies to packages ...</a>
+						<div class="sidebar-news-meta">2016年8月1日</div>
+					</div>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">John Abraham, Sonakshi Sinha and Tahir ...</a>
+						<div class="sidebar-news-meta">2016年9月29日</div>
+					</div>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">John Abraham, Sonakshi Sinha and Tahir ...</a>
+						<div class="sidebar-news-meta">2016年9月29日</div>
+					</div>
+				</div>
+
+				<div class="sidebar-widget">
+					<h3 class="widget-title">最新上架</h3>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">《误杀》</a>
+						<div class="sidebar-news-meta">2019年</div>
+					</div>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">《复仇者联盟4》</a>
+						<div class="sidebar-news-meta">2019年</div>
+					</div>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">《流浪地球》</a>
+						<div class="sidebar-news-meta">2019年</div>
+					</div>
+					<div class="sidebar-news-item">
+						<a href="/newssingle">《哪吒之魔童降世》</a>
+						<div class="sidebar-news-meta">2019年</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 分页导航 -->
+		<div class="pagination">
+			<a href="#" class="page-link"><i class="fas fa-chevron-left"></i></a>
+			<a href="#" class="page-link active">1</a>
+			<a href="#" class="page-link">2</a>
+			<a href="#" class="page-link">3</a>
+			<a href="#" class="page-link">4</a>
+			<a href="#" class="page-link"><i class="fas fa-chevron-right"></i></a>
+		</div>
+	</div>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer">
+	<div class="container">
+		<div class="footer-content">
+			<div class="footer-about">
+				<a href="/index" class="footer-logo"><span>Film</span>Elite</a>
+				<p>Film Elite 是您的高端影视观看平台，提供最新、最热门的电影和剧集，让您足不出户享受影院级观影体验。</p>
+				<div class="social-links">
+					<a href="#"><i class="fab fa-facebook-f"></i></a>
+					<a href="#"><i class="fab fa-twitter"></i></a>
+					<a href="#"><i class="fab fa-instagram"></i></a>
+					<a href="#"><i class="fab fa-youtube"></i></a>
+				</div>
+			</div>
+
+			<div class="footer-links-container">
+				<h3 class="footer-title">快速链接</h3>
+				<ul class="footer-links">
+					<li><a href="/index">首页</a></li>
+					<li><a href="/series">排行榜</a></li>
+					<li><a href="/news">新闻</a></li>
+					<li><a href="/about">关于我们</a></li>
+					<li><a href="/contact">联系方式</a></li>
+				</ul>
+			</div>
+
+			<div class="footer-links-container">
+				<h3 class="footer-title">电影类型</h3>
+				<ul class="footer-links">
+					<li><a href="/science">喜剧</a></li>
+					<li><a href="/action">动作</a></li>
+					<li><a href="/sf">科幻</a></li>
+					<li><a href="/love">爱情</a></li>
+					<li><a href="/suspense">悬疑</a></li>
+				</ul>
+			</div>
+
+			<div class="footer-contact">
+				<h3 class="footer-title">联系我们</h3>
+				<p><i class="fas fa-map-marker-alt"></i> 北京市朝阳区影视大厦A座</p>
+				<p><i class="fas fa-phone"></i> 400-123-4567</p>
+				<p><i class="fas fa-envelope"></i> info@filmelite.com</p>
+			</div>
+		</div>
+
+		<div class="footer-bottom">
+			<p>&copy; 2023 Film Elite. 保留所有权利。</p>
+		</div>
+	</div>
+</footer>
+
+<!-- 登录模态框 -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">用户登录</h5>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="loginForm">
+					<input type="text" class="form-control" placeholder="用户名" name="username" required>
+					<input type="password" class="form-control" placeholder="密码" name="password" required>
+
+					<div class="checkbox-container">
+						<input type="checkbox" id="rememberMe">
+						<label for="rememberMe">记住我</label>
+					</div>
+
+					<div class="form-footer">
+						<button type="submit" class="btn">登录</button>
+						<a href="#" class="forgot-password">忘记密码?</a>
+					</div>
+				</form>
+
+				<div style="text-align: center; margin-top: 20px;">
+					<p>还没有账号? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal">立即注册</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 注册模态框 -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">用户注册</h5>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="registerForm">
+					<input type="text" class="form-control" placeholder="用户名" name="rname" required>
+					<input type="email" class="form-control" placeholder="电子邮箱" name="email" required>
+					<input type="password" class="form-control" placeholder="密码" name="rpassword" required>
+					<input type="password" class="form-control" placeholder="确认密码" name="conformPassword" required>
+
+					<div class="checkbox-container">
+						<input type="checkbox" id="agreeTerms">
+						<label for="agreeTerms">我同意<a href="#">使用协议</a>和<a href="#">隐私政策</a></label>
+					</div>
+
+					<div class="form-footer">
+						<button type="submit" class="btn">注册</button>
+					</div>
+				</form>
+
+				<div style="text-align: center; margin-top: 20px;">
+					<p>已有账号? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">立即登录</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	// 移动端菜单切换
+	document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+		document.body.classList.toggle('mobile-menu-active');
+	});
+
+	// 分页导航功能
+	document.querySelectorAll('.page-link').forEach(link => {
+		link.addEventListener('click', function(e) {
+			e.preventDefault();
+			if (!this.classList.contains('active')) {
+				document.querySelectorAll('.page-link').forEach(item => item.classList.remove('active'));
+				this.classList.add('active');
+				// 这里可以添加加载不同页面内容的逻辑
+			}
+		});
+	});
+
+	// 登录和注册模态框切换
+	document.querySelectorAll('.forgot-password').forEach(link => {
+		link.addEventListener('click', function(e) {
+			e.preventDefault();
+			// 这里可以添加忘记密码的逻辑
+		});
+	});
+</script>
+</body>
+</html>
